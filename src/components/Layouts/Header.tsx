@@ -1,15 +1,30 @@
 import React from 'react'
 import { paths } from 'consts/paths'
 import { ButtonHeader } from 'styles/Button'
-import { TypographyHeader } from 'styles/Typography'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Box, CardMedia } from '@mui/material'
+import { Badge, Space } from 'antd'
+
 import userStore from 'stores/user'
+import { checkMining } from 'api/blockchain'
 import DropdownHeader from './DropdownHeader'
 
 const Header = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { user } = userStore()
+  const [countCheckMine, setCountCheckMine] = React.useState<number>(0)
+
+  const handleCheckMine = async () => {
+    const { data } = await checkMining()
+    if (data?.success) {
+      setCountCheckMine(data?.data)
+    }
+  }
+
+  React.useEffect(() => {
+    handleCheckMine()
+  }, [location.pathname])
 
   return (
     <Box
@@ -32,25 +47,24 @@ const Header = () => {
           navigate(paths.home)
         }}
       />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '300px',
-        }}
-      >
-        <TypographyHeader
-          variant="subtitle2"
-          sx={{
-            cursor: 'pointer',
+      <Space>
+        <ButtonHeader
+          onClick={() => {
+            navigate(paths.transaction)
           }}
         >
-          What is MEW
-        </TypographyHeader>
-        <TypographyHeader variant="subtitle2">Wallet actions</TypographyHeader>
-        <TypographyHeader variant="subtitle2">Buy ETH</TypographyHeader>
-      </Box>
+          Transaction
+        </ButtonHeader>
+        <Badge style={{ backgroundColor: '#52c41a' }} count={countCheckMine}>
+          <ButtonHeader
+            onClick={() => {
+              navigate(paths.pendingTransaction)
+            }}
+          >
+            Pending Transactions
+          </ButtonHeader>
+        </Badge>
+      </Space>
 
       <Box
         sx={{

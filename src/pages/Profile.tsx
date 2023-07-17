@@ -2,12 +2,12 @@ import React from 'react'
 
 import { Grid, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
+import { Tooltip } from 'antd'
+import { toast } from 'react-toastify'
 
 import LayoutMain from 'components/Layouts'
 import { getWallet } from 'api/user'
 import userStore from 'stores/user'
-import { Tooltip } from 'antd'
-import { toast } from 'react-toastify'
 
 const Profile = () => {
   const { getUser } = userStore()

@@ -94,7 +94,7 @@ const DetailTransaction = ({ hashChoose }: PropsDetailTransaction) => {
           )}
           {text === user?.publicKey && (
             <Typography variant="subtitle2" color="gray">
-              (That`&apos;`s yours!)
+              (That&apos;s yours!)
             </Typography>
           )}
         </Box>
